@@ -10,5 +10,7 @@ namespace SimGreenHearts.Shared.Entities
         [MaxLength(100, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Description { get; set; } = null!;
+
+        public ICollection<Event>? Events { get; set; }
     }
 }

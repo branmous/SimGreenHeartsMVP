@@ -20,5 +20,9 @@ namespace SimGreenHearts.Shared.Entities
 
         public DateTime CreatedDate { get; set; }
 
+        public EventType? EventType { get; set; }
+
+        public int EventTypeId { get; set; }
+
     }
 }
