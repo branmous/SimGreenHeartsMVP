@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimGreenHearts.WEB", "SimGreenHearts.WEB\SimGreenHearts.WEB.csproj", "{9AA142AF-87AE-457C-AC32-E124C4BCFF65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimGreenHearts.WEB", "SimGreenHearts.WEB\SimGreenHearts.WEB.csproj", "{9AA142AF-87AE-457C-AC32-E124C4BCFF65}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimGreenHearts.EventsAPI", "SimGreenHearts.EventsAPI\SimGreenHearts.EventsAPI.csproj", "{F0371465-9CE3-4A6F-8F91-CD7A79DCC97B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimGreenHearts.Shared", "SimGreenHearts.Shared\SimGreenHearts.Shared.csproj", "{D11387F1-D166-42E3-B969-FACE8BD3B1B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{9AA142AF-87AE-457C-AC32-E124C4BCFF65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AA142AF-87AE-457C-AC32-E124C4BCFF65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AA142AF-87AE-457C-AC32-E124C4BCFF65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0371465-9CE3-4A6F-8F91-CD7A79DCC97B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0371465-9CE3-4A6F-8F91-CD7A79DCC97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0371465-9CE3-4A6F-8F91-CD7A79DCC97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0371465-9CE3-4A6F-8F91-CD7A79DCC97B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D11387F1-D166-42E3-B969-FACE8BD3B1B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D11387F1-D166-42E3-B969-FACE8BD3B1B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D11387F1-D166-42E3-B969-FACE8BD3B1B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D11387F1-D166-42E3-B969-FACE8BD3B1B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
