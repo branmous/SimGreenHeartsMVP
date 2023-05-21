@@ -1,9 +1,10 @@
 ﻿@page "/login"
-@using SimGreenHearts.Shared.DTO;
-
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
 <div class="card" data-wow-delay="0.1s">
     <p class="fs-5 fw-bold text-primary text-center">Login</p>
-    <EditForm Model="authDTO">
+    <EditForm Model="authDTO" OnValidSubmit="LoginAsync">
         <DataAnnotationsValidator />
         <div class="card-body align-content-center">
             <div class="col-12 mb-3">
@@ -31,4 +32,17 @@
 @code {
     private AuthDTO authDTO = new();
 
+    private async Task LoginAsync()
+    {
+        var responseHttp = await repository.PostAsync<AuthDTO, TokenDTO>("/api/accounts/Login", authDTO);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            return;
+        }
+
+        await loginService.LoginAsync(responseHttp.Response!.Token);
+        navigationManager.NavigateTo("/");
+
+    }
 }

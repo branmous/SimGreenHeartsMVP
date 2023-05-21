@@ -1,0 +1,27 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="" class="nav-item nav-link visually-hidden">Home</a>
+            <a href="" class="nav-item nav-link">Inicio</a>
+
+            <a href="fetchdata" class="nav-item nav-link">Eventos</a>
+            <a href="counter" class="nav-item nav-link">Reportes</a>
+            <a href="counter" class="nav-item nav-link">Dispositivos</a>
+        </div>
+        <a href="logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">
+            Cerrar sesión
+            <i class="fa fa-arrow-right ms-3"></i>
+        </a>
+    </Authorized>
+    <NotAuthorized>
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="" class="nav-item nav-link visually-hidden">Home</a>
+            <a href="" class="nav-item nav-link">Inicio</a>
+        </div>
+        <a href="login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">
+            Login
+            <i class="fa fa-arrow-right ms-3"></i>
+        </a>
+
+    </NotAuthorized>
+</AuthorizeView>
