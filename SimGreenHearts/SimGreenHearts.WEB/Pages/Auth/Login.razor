@@ -1,0 +1,34 @@
+﻿@page "/login"
+@using SimGreenHearts.Shared.DTO;
+
+<div class="card" data-wow-delay="0.1s">
+    <p class="fs-5 fw-bold text-primary text-center">Login</p>
+    <EditForm Model="authDTO">
+        <DataAnnotationsValidator />
+        <div class="card-body align-content-center">
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputText class="form-control" @bind-Value="@authDTO.Email" placeholder="Your Email" />
+                    <label>Correo eletrónico</label>
+                    <ValidationMessage For="@(() => authDTO.Email)" />
+                </div>
+            </div>
+
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputText class="form-control" type="password" @bind-Value="@authDTO.Password" placeholder="Your Password" />
+                    <label>Contraseña</label>
+                    <ValidationMessage For="@(() => authDTO.Password)" />
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary py-3 px-4" type="submit">Ingresar</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private AuthDTO authDTO = new();
+
+}
