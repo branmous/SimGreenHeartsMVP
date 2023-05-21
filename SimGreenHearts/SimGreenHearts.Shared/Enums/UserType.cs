@@ -2,10 +2,10 @@
 {
     public enum UserType
     {
+        Provider,
         Admin,
         Director,
         Agronomist,
         Technician,
-        Provider,
     }
 }
