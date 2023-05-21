@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SimGreenHearts.Shared.Entities
 {
@@ -18,11 +12,18 @@ namespace SimGreenHearts.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string? Observation { get; set; }
 
+        [Display(Name = "Fecha de creación")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public DateTime CreatedDate { get; set; }
 
         public EventType? EventType { get; set; }
 
+        [Display(Name = "Evento")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una {0}.")]
         public int EventTypeId { get; set; }
+
+        public User? User { get; set; }
+        public string UserId { get; set; } = null!;
 
     }
 }
