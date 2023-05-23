@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimGreenHearts.EventsAPI", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimGreenHearts.Shared", "SimGreenHearts.Shared\SimGreenHearts.Shared.csproj", "{D11387F1-D166-42E3-B969-FACE8BD3B1B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimGreenHearts.IoTDevicesAPI", "SimGreenHearts.IoTDevicesAPI\SimGreenHearts.IoTDevicesAPI.csproj", "{31485F41-340F-4C6E-AECF-282FE3E6A538}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimGreenHearts.IoTDevicesAPI", "SimGreenHearts.IoTDevicesAPI\SimGreenHearts.IoTDevicesAPI.csproj", "{31485F41-340F-4C6E-AECF-282FE3E6A538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
