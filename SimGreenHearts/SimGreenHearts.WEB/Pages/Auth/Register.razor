@@ -56,6 +56,11 @@
                             <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                         </div>
                     </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-12">
@@ -67,6 +72,16 @@
 @code {
 
     private UserDTO userDTO = new();
+    private string? imageUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(userDTO.Photo))
+        {
+            imageUrl = userDTO.Photo;
+            userDTO.Photo = null;
+        }
+    }
 
     public async Task RegisterAsync()
     {
@@ -82,4 +97,11 @@
         await loginService.LoginAsync(response.Response!.Token);
         navigationManager.NavigateTo("/");
     }
+
+    private void ImageSelected(string imagenBase64)
+    {
+        userDTO.Photo = imagenBase64;
+        imageUrl = null;
+    }
+
 }
