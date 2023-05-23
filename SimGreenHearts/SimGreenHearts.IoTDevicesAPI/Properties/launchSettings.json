@@ -1,0 +1,58 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://kv-sim-demo.vault.azure.net/",
+        "AZURE_USERNAME": "nagudelo@paradigmasolutions.com"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5175"
+    },
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://kv-sim-demo.vault.azure.net/",
+        "AZURE_USERNAME": "nagudelo@paradigmasolutions.com"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7265;http://localhost:5175"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://kv-sim-demo.vault.azure.net/",
+        "AZURE_USERNAME": "nagudelo@paradigmasolutions.com"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "useSSL": true,
+      "environmentVariables": {
+        "VaultUri": "https://kv-sim-demo.vault.azure.net/",
+        "AZURE_USERNAME": "nagudelo@paradigmasolutions.com"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:57628",
+      "sslPort": 44370
+    }
+  }
+}
