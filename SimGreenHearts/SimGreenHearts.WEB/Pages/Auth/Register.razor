@@ -1,0 +1,107 @@
+﻿@page "/register"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+
+<div class="card" data-wow-delay="0.1s">
+    <p class="fs-5 fw-bold text-primary text-center">Registro de usuario</p>
+    <EditForm Model="userDTO" OnValidSubmit="RegisterAsync">
+        <DataAnnotationsValidator />
+        <div class="card-body align-content-center">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputText type="number" class="form-control" @bind-Value="@userDTO.Document" placeholder="Documento" />
+                            <label>Documento de identidad</label>
+                            <ValidationMessage For="@(() => userDTO.Document)" />
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputText class="form-control" @bind-Value="@userDTO.FirstName" placeholder="Nombres" />
+                            <label>Nombres</label>
+                            <ValidationMessage For="@(() => userDTO.FirstName)" />
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputText class="form-control" @bind-Value="@userDTO.LastName" placeholder="Apellidos" />
+                            <label>Apellidos</label>
+                            <ValidationMessage For="@(() => userDTO.LastName)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputText class="form-control" @bind-Value="@userDTO.Email" placeholder="Correo electrónico" />
+                            <label>Correo eletrónico</label>
+                            <ValidationMessage For="@(() => userDTO.Email)" />
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputText type="password" class="form-control" @bind-Value="@userDTO.Password" placeholder="Contraseña" />
+                            <label>Contraseña</label>
+                            <ValidationMessage For="@(() => userDTO.Password)" />
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputText type="password" class="form-control" @bind-Value="@userDTO.PasswordConfirm" placeholder="Confirmar contraseña" />
+                            <label>Confirmar contraseña</label>
+                            <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary py-3 px-4" type="submit">Registrar</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+@code {
+
+    private UserDTO userDTO = new();
+    private string? imageUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(userDTO.Photo))
+        {
+            imageUrl = userDTO.Photo;
+            userDTO.Photo = null;
+        }
+    }
+
+    public async Task RegisterAsync()
+    {
+        userDTO.UserType = UserType.Agronomist;
+        userDTO.UserName = userDTO.Email;
+        var response = await repository.PostAsync<UserDTO, TokenDTO>("/api/Accounts/CreateUser", userDTO);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            return;
+        }
+
+        await loginService.LoginAsync(response.Response!.Token);
+        navigationManager.NavigateTo("/");
+    }
+
+    private void ImageSelected(string imagenBase64)
+    {
+        userDTO.Photo = imagenBase64;
+        imageUrl = null;
+    }
+
+}
