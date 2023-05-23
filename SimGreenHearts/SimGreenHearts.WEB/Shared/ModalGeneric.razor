@@ -1,0 +1,42 @@
+﻿<Modal @ref="modal">
+    <HeaderTemplate>
+        @Title
+    </HeaderTemplate>
+    <BodyTemplate>
+        @Message
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Danger" @onclick="OnHideModalClick">Close</Button>
+        @if (ShowSaveChanges)
+        {
+            <Button Color="ButtonColor.Primary">Save changes</Button>
+        }
+
+    </FooterTemplate>
+</Modal>
+
+@code {
+    private Modal modal;
+
+    [Parameter]
+    public string Title { get; set; } = "Información";
+
+    [Parameter]
+    public string Message { get; set; }
+
+    [Parameter]
+    public bool ShowSaveChanges { get; set; } = false;
+
+    private async Task OnHideModalClick()
+    {
+        await modal?.HideAsync();
+    }
+
+    public async Task ShowError(string message, bool showSaveChanges)
+    {
+        Title = "Error";
+        Message = message;
+        ShowSaveChanges = false;
+        await modal?.ShowAsync();
+    }
+}

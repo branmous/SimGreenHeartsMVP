@@ -1,0 +1,68 @@
+﻿@page "/events"
+
+@inject IRepository repository
+@inject NavigationManager navigationManager
+
+<div class="mb-2">
+
+    <h3>Eventos</h3>
+
+    <a class="btn btn-primary" href="/events/create"><Icon Name="IconName.HouseAdd" /> Nuevo evento </a>
+
+</div>
+
+
+
+<Grid TItem="Event" class="table table-hover table-bordered table-striped"
+      DataProvider="EmployeesDataProvider" AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="5">
+    <GridColumn TItem="Event" HeaderText="Id" PropertyName="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="Event" HeaderText="Tipo de Evento" PropertyName="EventType!.Description" StringComparison="StringComparison.Ordinal">
+        @context.EventType!.Description
+    </GridColumn>
+    <GridColumn TItem="Event" HeaderText="Fecha de creación" PropertyName="CreatedDate">
+        @context.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")
+    </GridColumn>
+    <GridColumn TItem="Event" HeaderText="Usuario" PropertyName="FullName">
+        @context.User!.FullName
+    </GridColumn>
+    <GridColumn TItem="Event" HeaderText="Observación" PropertyName="Observation">
+        @context.Observation
+    </GridColumn>
+</Grid>
+
+
+
+@code {
+    private List<Event> events;
+
+    private async Task<GridDataProviderResult<Event>> EmployeesDataProvider(GridDataProviderRequest<Event> request)
+    {
+        if (events is null)
+            events = GetEvents();
+
+        return await Task.FromResult(request.ApplyTo(events));
+    }
+
+    private List<Event> GetEvents()
+    {
+        return new List<Event>
+        {
+            new Event{
+                Id = 1,
+                CreatedDate = DateTime.Now,
+                EventType = new EventType{ Description = "Poda", Id = 1},
+                EventTypeId = 1,
+                Observation = "Esto es una observación",
+                User = new User
+                {
+                    FirstName = "Brandon",
+                    LastName = "Montoya"
+                },
+                UserId = Guid.NewGuid().ToString()
+            }
+        };
+    }
+
+}
