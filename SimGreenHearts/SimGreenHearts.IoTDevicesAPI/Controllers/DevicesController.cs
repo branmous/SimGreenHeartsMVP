@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Devices;
 using SimGreenHearts.IoTDevicesAPI.Interfaces;
 using SimGreenHearts.IoTDevicesAPI.Models.DTO;
@@ -9,6 +11,8 @@ namespace SimGreenHearts.IoTDevicesAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class DevicesController : ControllerBase
     {
         private readonly IAzureIotHubClient _devicesClient;
