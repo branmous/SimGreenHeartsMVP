@@ -47,7 +47,7 @@
 
     private async Task<List<EventListDTO>> GetEvents()
     {
-        var response = await repository.GetAsync<List<EventListDTO>>("/api/events");
+        var response = await repository.GetAsync<List<EventListDTO>>("/gateway/events");
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();

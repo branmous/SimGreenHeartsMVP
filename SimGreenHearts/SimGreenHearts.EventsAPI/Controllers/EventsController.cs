@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SimGreenHearts.EventsAPI.Data;
 using SimGreenHearts.EventsAPI.Helpers;
 using SimGreenHearts.Shared.DTO;
 using SimGreenHearts.Shared.Entities;
-using System;
 
 namespace SimGreenHearts.EventsAPI.Controllers
 {
@@ -21,7 +19,7 @@ namespace SimGreenHearts.EventsAPI.Controllers
         private readonly DataContext dataContext;
         private readonly IUserHelper userHelper;
 
-        public EventsController(DataContext dataContext,IUserHelper userHelper)
+        public EventsController(DataContext dataContext, IUserHelper userHelper)
         {
             this.dataContext = dataContext;
             this.userHelper = userHelper;
@@ -46,7 +44,7 @@ namespace SimGreenHearts.EventsAPI.Controllers
                     CreatedDate = item.CreatedDate,
                     EventType = new EventTypeDTO
                     {
-                        Description =item.EventType!.Description,
+                        Description = item.EventType!.Description,
                         Id = item.EventType!.Id,
                     },
                     Id = item.Id,
