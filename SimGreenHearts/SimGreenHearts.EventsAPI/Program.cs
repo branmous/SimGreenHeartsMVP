@@ -50,7 +50,7 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConnection"));
 builder.Services.AddTransient<SeedDB>();
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
