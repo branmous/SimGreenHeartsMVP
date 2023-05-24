@@ -8,7 +8,7 @@ namespace SimGreenHearts.Shared.DTO
         public string? Observation { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        public EventType? EventType { get; set; }
+        public EventTypeDTO? EventType { get; set; }
 
         public string? UserFullName { get; set; }
     }

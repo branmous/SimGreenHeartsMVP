@@ -33,7 +33,7 @@ namespace SimGreenHearts.EventsAPI.Controllers
             return Ok(await dataContext.EventTypes.ToListAsync());
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public async Task<ActionResult> GetEvents()
         {
             var events = await dataContext.Events.Include(e => e.User).Include(e => e.EventType).ToListAsync();
@@ -44,7 +44,11 @@ namespace SimGreenHearts.EventsAPI.Controllers
                 eventList.Add(new EventListDTO
                 {
                     CreatedDate = item.CreatedDate,
-                    EventType = item.EventType,
+                    EventType = new EventTypeDTO
+                    {
+                        Description =item.EventType!.Description,
+                        Id = item.EventType!.Id,
+                    },
                     Id = item.Id,
                     Observation = item.Observation,
                     UserFullName = item.User!.FullName
