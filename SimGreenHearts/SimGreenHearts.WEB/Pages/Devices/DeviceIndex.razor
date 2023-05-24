@@ -5,6 +5,59 @@
 
 <h3>Dispositivos</h3>
 
-@code {
+<Grid TItem="DeviceListDTO" class="table table-hover table-bordered table-striped"
+      DataProvider="DevicesDataProvider" AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="20">
+    <GridColumn TItem="DeviceListDTO" HeaderText="Id" PropertyName="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="DeviceListDTO" HeaderText="Estado" PropertyName="Status" StringComparison="StringComparison.Ordinal">
+        @context.Status
+    </GridColumn>
+    <GridColumn TItem="DeviceListDTO" HeaderText="Estado de Conexión" PropertyName="ConnectionState" StringComparison="StringComparison.Ordinal">
+        @context.ConnectionState
+    </GridColumn>
+    <GridColumn TItem="DeviceListDTO" HeaderText="Estado de conexión Hora de actualización" PropertyName="ConnectionStateUpdatedTime">
+        @context.ConnectionStateUpdatedTime!.Value.ToString("yyyy-MM-dd HH:mm:ss")
+    </GridColumn>
+    <GridColumn TItem="DeviceListDTO" HeaderText="estado Hora de actualización" PropertyName="StatusUpdatedTime">
+        @context.StatusUpdatedTime!.Value.ToString("yyyy-MM-dd HH:mm:ss")
+    </GridColumn>
+    <GridColumn TItem="DeviceListDTO" HeaderText="Última hora de actividad" PropertyName="LastActivityTime">
+        @context.LastActivityTime!.Value.ToString("yyyy-MM-dd HH:mm:ss")
+    </GridColumn>
+</Grid>
 
+<ModalGeneric @ref="modal" />
+
+@code {
+    private List<DeviceListDTO> devices;
+    private ModalGeneric modal = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDevices();
+    }
+
+    private async Task<GridDataProviderResult<DeviceListDTO>> DevicesDataProvider(GridDataProviderRequest<DeviceListDTO> request)
+    {
+        if (devices is null)
+        {
+            devices = await GetDevices();
+        }
+
+        return await Task.FromResult(request.ApplyTo(devices));
+    }
+
+    public async Task<List<DeviceListDTO>> GetDevices()
+    {
+        var response = await repository.GetAsync<List<DeviceListDTO>>("/gateway/devices/iothub-xm-dev");
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await modal.ShowError(message!, false);
+            return new();
+        }
+
+        return response.Response!;
+    }
 }
