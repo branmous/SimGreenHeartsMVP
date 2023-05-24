@@ -1,0 +1,61 @@
+﻿@page "/events"
+
+@inject IRepository repository
+@inject NavigationManager navigationManager
+
+<div class="mb-2">
+
+    <h3>Eventos</h3>
+
+    <a class="btn btn-primary" href="/events/create"><Icon Name="IconName.HouseAdd" /> Nuevo evento </a>
+
+</div>
+
+<Grid TItem="EventListDTO" class="table table-hover table-bordered table-striped"
+      DataProvider="EmployeesDataProvider" AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="5">
+    <GridColumn TItem="EventListDTO" HeaderText="Id" PropertyName="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="EventListDTO" HeaderText="Tipo de Evento" PropertyName="EventType!.Description" StringComparison="StringComparison.Ordinal">
+        @context.EventType!.Description
+    </GridColumn>
+    <GridColumn TItem="EventListDTO" HeaderText="Fecha de creación" PropertyName="CreatedDate">
+        @context.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")
+    </GridColumn>
+    <GridColumn TItem="EventListDTO" HeaderText="Usuario" PropertyName="UserFullName">
+        @context.UserFullName
+    </GridColumn>
+    <GridColumn TItem="EventListDTO" HeaderText="Observación" PropertyName="Observation">
+        @context.Observation
+    </GridColumn>
+</Grid>
+
+<ModalGeneric @ref="modal" />
+
+
+@code {
+    private List<EventListDTO> events;
+    private ModalGeneric modal = default!;
+
+    private async Task<GridDataProviderResult<EventListDTO>> EmployeesDataProvider(GridDataProviderRequest<EventListDTO> request)
+    {
+        if (events is null)
+            events = await GetEvents();
+
+        return await Task.FromResult(request.ApplyTo(events));
+    }
+
+    private async Task<List<EventListDTO>> GetEvents()
+    {
+        var response = await repository.GetAsync<List<EventListDTO>>("/api/events");
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await modal.ShowError(message!, false);
+            return new List<EventListDTO>();
+        }
+
+        return response.Response!;
+    }
+
+}

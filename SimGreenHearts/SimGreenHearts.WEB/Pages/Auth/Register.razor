@@ -69,8 +69,12 @@
         </div>
     </EditForm>
 </div>
+
+<ModalGeneric @ref="modal" />
+
 @code {
 
+    private ModalGeneric modal = default!;
     private UserDTO userDTO = new();
     private string? imageUrl;
 
@@ -91,6 +95,7 @@
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
+            await modal.ShowError(message!, false);
             return;
         }
 

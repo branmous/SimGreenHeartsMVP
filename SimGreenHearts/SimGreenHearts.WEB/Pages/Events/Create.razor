@@ -1,0 +1,66 @@
+﻿@page "/events/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+
+<div class="card" data-wow-delay="0.1s">
+    <div class="mb-2">
+        <a class="btn btn-primary" href="/events"><Icon Name="IconName.BoxArrowInLeft" /> Atrás </a>
+        <span class="fs-5 fw-bold text-primary text-center">Crear Evento</span>
+    </div>
+    
+    <EditForm Model="eventDTO" OnValidSubmit="SaveAsync">
+        <DataAnnotationsValidator />
+        <div class="card-body align-content-center">
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <select class="form-select" @bind="eventDTO.EventId">
+                        <option value="0">-- Seleccione un evento --</option>
+                        @if (eventTypes is not null)
+                        {
+                            @foreach (var type in eventTypes)
+                            {
+                                <option value="@type.Id">@type.Description</option>
+                            }
+                        }
+                    </select>
+                    <label>Eventos</label>
+                    <ValidationMessage For="@(() => eventDTO.EventId)" />
+                </div>
+                
+            </div>
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputTextArea class="form-control" @bind-Value="@eventDTO.Observation" placeholder="Your Email" />
+                    <label>Observaciones</label>
+                    <ValidationMessage For="@(() => eventDTO.Observation)" />
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary py-3 px-4" type="submit"><Icon Name="IconName.CheckCircle" /> Guardar</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+
+<ModalGeneric @ref="modal" />
+
+@code {
+    private EventDTO eventDTO = new();
+    private List<EventType> eventTypes = new();
+    private ModalGeneric modal = default!;
+
+    private async Task SaveAsync()
+    {
+        var response = await repository.PostAsync("/api/events", eventDTO);
+        if (!response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await modal.ShowError(message!, false);
+            return;
+        }
+
+        await modal.ShowSuccess("El evento se ha registrado correctamente!!");
+        navigationManager.NavigateTo("/events");
+    }
+}

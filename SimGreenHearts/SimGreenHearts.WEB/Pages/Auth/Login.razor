@@ -29,7 +29,12 @@
     </EditForm>
 </div>
 
+<ModalGeneric @ref="modal" />
+
 @code {
+
+    private ModalGeneric modal = default!;
+
     private AuthDTO authDTO = new();
 
     private async Task LoginAsync()
@@ -38,6 +43,7 @@
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
+            await modal.ShowError(message!, false);
             return;
         }
 
@@ -45,4 +51,6 @@
         navigationManager.NavigateTo("/");
 
     }
+
+
 }
