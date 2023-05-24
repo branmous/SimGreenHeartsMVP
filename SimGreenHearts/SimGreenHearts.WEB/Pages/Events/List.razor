@@ -12,7 +12,7 @@
 </div>
 
 <Grid TItem="EventListDTO" class="table table-hover table-bordered table-striped"
-      DataProvider="EmployeesDataProvider" AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="5">
+      DataProvider="EventsDataProvider" AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="5">
     <GridColumn TItem="EventListDTO" HeaderText="Id" PropertyName="Id">
         @context.Id
     </GridColumn>
@@ -37,7 +37,7 @@
     private List<EventListDTO> events;
     private ModalGeneric modal = default!;
 
-    private async Task<GridDataProviderResult<EventListDTO>> EmployeesDataProvider(GridDataProviderRequest<EventListDTO> request)
+    private async Task<GridDataProviderResult<EventListDTO>> EventsDataProvider(GridDataProviderRequest<EventListDTO> request)
     {
         if (events is null)
             events = await GetEvents();
