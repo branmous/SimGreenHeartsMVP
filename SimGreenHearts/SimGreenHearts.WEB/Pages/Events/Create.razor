@@ -3,7 +3,11 @@
 @inject NavigationManager navigationManager
 
 <div class="card" data-wow-delay="0.1s">
-    <p class="fs-5 fw-bold text-primary text-center">Crear Evento</p>
+    <div class="mb-2">
+        <a class="btn btn-primary" href="/events"><Icon Name="IconName.BoxArrowInLeft" /> Atrás </a>
+        <span class="fs-5 fw-bold text-primary text-center">Crear Evento</span>
+    </div>
+    
     <EditForm Model="eventDTO" OnValidSubmit="SaveAsync">
         <DataAnnotationsValidator />
         <div class="card-body align-content-center">
@@ -22,8 +26,6 @@
                     <label>Eventos</label>
                     <ValidationMessage For="@(() => eventDTO.EventId)" />
                 </div>
-
-                
                 
             </div>
             <div class="col-12 mb-3">
@@ -34,18 +36,31 @@
                 </div>
             </div>
             <div class="col-12">
-                <button class="btn btn-primary py-3 px-4" type="submit">Guardar</button>
+                <button class="btn btn-primary py-3 px-4" type="submit"><Icon Name="IconName.CheckCircle" /> Guardar</button>
             </div>
         </div>
     </EditForm>
 </div>
 
+
+<ModalGeneric @ref="modal" />
+
 @code {
     private EventDTO eventDTO = new();
     private List<EventType> eventTypes = new();
+    private ModalGeneric modal = default!;
 
     private async Task SaveAsync()
     {
-        
+        var response = await repository.PostAsync("/api/events", eventDTO);
+        if (!response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await modal.ShowError(message!, false);
+            return;
+        }
+
+        await modal.ShowSuccess("El evento se ha registrado correctamente!!");
+        navigationManager.NavigateTo("/events");
     }
 }
