@@ -63,7 +63,7 @@ namespace SimGreenHearts.EventsAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostEvent([FromQuery] EventDTO eventDTO)
+        public async Task<ActionResult> PostEvent([FromBody] EventDTO eventDTO)
         {
             var user = await userHelper.GetUserAsync(User.Identity!.Name!);
             if (user == null)
