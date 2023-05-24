@@ -10,7 +10,7 @@
         "AZURE_USERNAME": "nagudelo@paradigmasolutions.com"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5175"
+      "applicationUrl": "http://localhost:5005"
     },
     "https": {
       "commandName": "Project",
@@ -22,7 +22,7 @@
         "AZURE_USERNAME": "nagudelo@paradigmasolutions.com"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7265;http://localhost:5175"
+      "applicationUrl": "https://localhost:7005;http://localhost:5005"
     },
     "IIS Express": {
       "commandName": "IISExpress",

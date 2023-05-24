@@ -39,7 +39,7 @@
 
     private async Task LoginAsync()
     {
-        var responseHttp = await repository.PostAsync<AuthDTO, TokenDTO>("/api/accounts/Login", authDTO);
+        var responseHttp = await repository.PostAsync<AuthDTO, TokenDTO>("/gateway/accounts/Login", authDTO);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();

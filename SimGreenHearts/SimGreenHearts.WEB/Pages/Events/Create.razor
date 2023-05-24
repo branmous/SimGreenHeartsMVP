@@ -60,7 +60,7 @@
 
     private async Task SaveAsync()
     {
-        var response = await repository.PostAsync<EventDTO, Event>("/api/events", eventDTO);
+        var response = await repository.PostAsync<EventDTO, Event>("/gateway/events", eventDTO);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -79,7 +79,7 @@
 
     private async Task GetEventTypes()
     {
-        var response = await repository.GetAsync<List<EventType>>("/api/events/GetEventTypes");
+        var response = await repository.GetAsync<List<EventType>>("/gateway/events/GetEventTypes");
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();

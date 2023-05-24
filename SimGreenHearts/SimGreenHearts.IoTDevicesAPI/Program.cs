@@ -22,6 +22,7 @@ var hubString = $"HostName={builder.Configuration["IOTHUB_HOSTNAME"]}.azure-devi
 builder.Services.AddScoped(typeof(RegistryManager), rm => RegistryManager.CreateFromConnectionString(hubString));
 builder.Services.AddScoped<IAzureIotHubClient, DevicesClient>();
 builder.Services.AddControllers();
+builder.Services.AddCors();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +41,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 var app = builder.Build();
 
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -49,5 +55,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+
 
 app.Run();

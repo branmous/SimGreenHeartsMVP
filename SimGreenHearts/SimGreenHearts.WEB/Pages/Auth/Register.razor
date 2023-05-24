@@ -91,7 +91,7 @@
     {
         userDTO.UserType = UserType.Agronomist;
         userDTO.UserName = userDTO.Email;
-        var response = await repository.PostAsync<UserDTO, TokenDTO>("/api/Accounts/CreateUser", userDTO);
+        var response = await repository.PostAsync<UserDTO, TokenDTO>("/gateway/Accounts/CreateUser", userDTO);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();

@@ -26,7 +26,7 @@ namespace SimGreenHearts.EventsAPI.Controllers
             _container = "users";
         }
 
-        [HttpPost("CreateUser")]
+        [HttpPost("[action]")]
         public async Task<ActionResult> CreateUser([FromBody] UserDTO model)
         {
             User user = model;
@@ -47,7 +47,7 @@ namespace SimGreenHearts.EventsAPI.Controllers
         }
 
 
-        [HttpPost("Login")]
+        [HttpPost("[action]")]
         public async Task<ActionResult> Login([FromBody] AuthDTO model)
         {
             var result = await _userHelper.LoginAsync(model);
