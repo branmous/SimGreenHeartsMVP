@@ -2,10 +2,9 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 
-<div class="card" data-wow-delay="0.1s">
-    <div class="mb-2">
+<div class="card  mb-5" data-wow-delay="0.1s">
+    <div class="mt-3">
         <a class="btn btn-primary" href="/events"><Icon Name="IconName.BoxArrowInLeft" /> Atrás </a>
-        <span class="fs-5 fw-bold text-primary text-center">Crear Evento</span>
     </div>
 
     <EditForm Model="eventDTO" OnValidSubmit="SaveAsync">
@@ -52,9 +51,14 @@
     private ModalGeneric modal = default!;
     List<ToastMessage> messages = new List<ToastMessage>();
 
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
+
 
     protected async override Task OnInitializedAsync()
     {
+        Layout!.Title = "Eventos";
+        Layout!.Breadcrumbs = new List<string>() { "Inicio", "Páginas", "Eventos", "Crear Eventos" };
         await GetEventTypes();
     }
 

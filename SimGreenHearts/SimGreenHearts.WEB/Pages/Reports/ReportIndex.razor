@@ -3,23 +3,29 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 
-<h3>Reportes</h3>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                &copy; <a class="border-bottom" href="#">PÁGINA EN CONSTRUCCIÓN</a>
-            </div>
-            <div class="col-md-6 text-center text-md-end">
-                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-            <!-- Designed By:
-                            <a class="border-bottom" href="https://htmlcodex.com">Equipo desarrollador SIM Green Hearts</a>/-->
-            </div>
+
+<div class="container text-center mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <i class="bi bi-exclamation-triangle display-1 text-primary"></i>
+            <h1 class="display-1">Oe</h1>
+            <h1 class="mb-4">Reportes En Construcción</h1>
+            <p class="mb-4">Lo siento, Esta pagina esta en construcción, no dio el tiempo para tanto</p>
+            <a class="btn btn-primary py-3 px-4" href="">Ir al inicio</a>
         </div>
     </div>
+</div>
 
 
 
 @code {
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
 
+    protected override void OnInitialized()
+    {
+        Layout!.Title = "Reportes";
+        Layout!.Breadcrumbs = new List<string>() { "Inicio", "Páginas", "Reportes"};
+    }
 }

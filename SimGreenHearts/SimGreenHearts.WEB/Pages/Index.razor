@@ -2,9 +2,10 @@
 
 <!-- About Start -->
 
-<div class="row align-items-end">
+<div class="row align-items-end mt-5 mb-5">
     <div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
-        <img class="img-fluid rounded" data-wow-delay="0.1s" src="">
+        <img class="img-fluid rounded" data-wow-delay="0.1s" src="img/about.jpg">
+
     </div>
     <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
         <h1 class="display-1 text-primary mb-0">5 Años</h1>
@@ -13,21 +14,19 @@
         <p class="mb-4">Actualmente contamos con un cultivo de Aguacate Hass ubicado en el municipio de Angosturas-Antioquia, en total contamos con 1300 árboles plantados.</p>
         <a class="btn btn-primary py-3 px-4" href="">Explorar Más</a>
     </div>
-   <div class="col-lg-3 col-md-12 wow fadeInUp d-flex align-items-center" data-wow-delay="0.5s">
-    <div class="row g-5">
-        <div class="col-12 col-sm-6 col-lg-12 text-center">
-            <div class="border-start ps-4">
-                <i class="fa fa-users fa-3x text-primary mb-3"></i>
-                <h4 class="mb-3">Nuestro equipo de trabajo</h4>
-                <span>Mónica Arbelaéz - Administradora</span>
-                <span>Nestor Arbelaéz - Director operativo</span>
-                <span>Nicolas Agudelo, Brandon Montoya y Cindy Caro - Equipo de desarrollo</span>
-            </div> 
-        </div>
-        <div class="">
-            <div class="border-start ps-10">
-                
-                    
+    <div class="col-lg-3 col-md-12 wow fadeInUp d-flex align-items-center" data-wow-delay="0.5s">
+        <div class="row g-5">
+            <div class="col-12 col-sm-6 col-lg-12 text-center">
+                <div class="border-start ps-4">
+                    <i class="fa fa-users fa-3x text-primary mb-3"></i>
+                    <h4 class="mb-3">Nuestro equipo de trabajo</h4>
+                    <span>Mónica Arbelaéz - Administradora</span>
+                    <span>Nestor Arbelaéz - Director operativo</span>
+                    <span>Nicolas Agudelo, Brandon Montoya y Cindy Caro - Equipo de desarrollo</span>
+                </div>
+            </div>
+            <div class="">
+                <div class="border-start ps-10">
                 </div>
             </div>
         </div>
@@ -35,3 +34,13 @@
 </div>
 
 <!-- About End -->
+@code {
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Layout!.Title = "Inicio";
+        Layout!.Breadcrumbs = new List<string>() { "Inicio" };
+    }
+}
