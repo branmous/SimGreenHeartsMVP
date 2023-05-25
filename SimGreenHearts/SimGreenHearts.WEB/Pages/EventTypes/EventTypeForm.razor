@@ -1,0 +1,32 @@
+﻿
+<EditForm Model="EventType" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="card-body align-content-center">
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <InputText class="form-control" @bind-Value="@EventType.Description" placeholder="Your Description" />
+                <label>Descripción</label>
+                <ValidationMessage For="@(() => EventType.Description)" />
+            </div>
+        </div>
+        <div class="col-12">
+            <Button Color="ButtonColor.Light" Type="ButtonType.Button" @onclick="OnCancel"><Icon Name="IconName.Backspace" /> Cancelar</Button>
+            <Button Color="ButtonColor.Primary" Type="ButtonType.Submit"><Icon Name="IconName.Check" /> Guardar</Button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public EventType EventType { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnCancel { get; set; }
+}

@@ -5,10 +5,9 @@
 @inject ToastService toastService
 
 <div class="mb-2">
-
+    <a class="btn btn-primary" href="/events/types"><Icon Name="IconName.FileRuled" /> Lista de tipo de eventos </a>
 
     <a class="btn btn-primary" href="/events/create"><Icon Name="IconName.HouseAdd" /> Nuevo evento </a>
-
 </div>
 
 <Grid TItem="EventListDTO" class="table table-hover table-bordered table-striped"
@@ -30,9 +29,9 @@
     </GridColumn>
 </Grid>
 
-
 @code {
     private List<EventListDTO> events;
+    
 
     [CascadingParameter]
     public MainLayout? Layout { get; set; }
