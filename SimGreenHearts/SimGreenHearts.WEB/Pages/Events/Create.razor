@@ -74,7 +74,7 @@
 
     private async Task GetEventTypes()
     {
-        var response = await repository.GetAsync<List<EventType>>("/gateway/events/GetEventTypes");
+        var response = await repository.GetAsync<List<EventType>>("/gateway/eventTypes");
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
