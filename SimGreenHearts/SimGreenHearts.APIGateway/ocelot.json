@@ -52,6 +52,18 @@
       ]
     },
     {
+      "UpstreamPathTemplate": "/gateway/accounts/changePassword",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Accounts/changePassword",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7004
+        }
+      ]
+    },
+    {
       "UpstreamPathTemplate": "/gateway/devices",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "DownstreamPathTemplate": "/api/Devices",
