@@ -1,0 +1,104 @@
+﻿@page "/devices/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+
+<div class="card" data-wow-delay="0.1s">
+    <div class="mb-2">
+        <a class="btn btn-primary" href="/devices"><Icon Name="IconName.BoxArrowInLeft" /> Atrás </a>
+        <span class="fs-5 fw-bold text-primary text-center">Crear Dispositivo</span>
+    </div>
+
+    <EditForm Model="createDeviceDTO" OnValidSubmit="SaveAsync">
+        <DataAnnotationsValidator />
+        <div class="card-body align-content-center">
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputText class="form-control" @bind-Value="@createDeviceDTO.Id" placeholder="Your Id" />
+                    <label>Identificación</label>
+                    <ValidationMessage For="@(() => createDeviceDTO.Id)" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <div class="form-floating">
+                        <Switch @bind-Value="statusDevice" Label="Estado del dispositivo" />
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="form-floating">
+                        <Switch @bind-Value="statusConnection" Label="Estado de conexión" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputText class="form-control" @bind-Value="@createDeviceDTO.PrimaryKey" placeholder="Your PrimaryKey" />
+                    <label>Clave primaria</label>
+                    <ValidationMessage For="@(() => createDeviceDTO.PrimaryKey)" />
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputText class="form-control" @bind-Value="@createDeviceDTO.SecondaryKey" placeholder="Your SecondaryKey" />
+                    <label>Clave secundaria</label>
+                    <ValidationMessage For="@(() => createDeviceDTO.SecondaryKey)" />
+                </div>
+            </div>
+
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputText type="number" class="form-control" @bind-Value="@createDeviceDTO.Latitude" placeholder="Your Latitude" />
+
+                    <label>Latitud</label>
+                    <ValidationMessage For="@(() => createDeviceDTO.Latitude)" />
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <InputText type="number" class="form-control" @bind-Value="@createDeviceDTO.Longitude" placeholder="Your Longitude" />
+                    <label>Longitud</label>
+                    <ValidationMessage For="@(() => createDeviceDTO.Longitude)" />
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-primary py-3 px-4" type="submit"><Icon Name="IconName.DeviceHdd" />Guardar</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+
+<ModalGeneric @ref="modal" />
+<Toasts class="p-3" Messages="messages" Placement="ToastsPlacement.TopRight" />
+
+@code {
+    private CreateDeviceDTO createDeviceDTO = new();
+    private ModalGeneric modal = default!;
+    List<ToastMessage> messages = new List<ToastMessage>();
+    private bool statusDevice = false;
+    private bool statusConnection = false;
+
+    private async Task SaveAsync()
+    {
+        createDeviceDTO.Status = statusDevice ? 0 : 1;
+        createDeviceDTO.ConnexionStatus = statusConnection ? 0 : 1;
+        var response = await repository.PostAsync<CreateDeviceDTO, DeviceListDTO>("/gateway/Devices/iothub-xm-dev", createDeviceDTO);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await modal.ShowError(message!, false);
+            return;
+        }
+
+        navigationManager.NavigateTo("/devices");
+        var toash = new ToastMessage
+            {
+                Type = ToastType.Success,
+                Message = $"Se agrego el dispositivo. Fecha: {DateTime.Now}",
+            };
+        messages.Add(toash);
+    }
+
+}

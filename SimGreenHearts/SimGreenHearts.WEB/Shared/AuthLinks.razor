@@ -5,8 +5,12 @@
             <a href="" class="nav-item nav-link">Inicio</a>
 
             <a href="events" class="nav-item nav-link">Eventos</a>
-            <a href="reports" class="nav-item nav-link">Reportes</a>
-            <a href="devices" class="nav-item nav-link">Dispositivos</a>
+            @if (context.User.IsInRole("Admin") || context.User.IsInRole("Provider"))
+            {
+                <a href="reports" class="nav-item nav-link">Reportes</a>
+                <a href="devices" class="nav-item nav-link">Dispositivos</a>
+            }
+
             <a href="profile" class="nav-item nav-link">Perfil</a>
         </div>
         <a href="logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">

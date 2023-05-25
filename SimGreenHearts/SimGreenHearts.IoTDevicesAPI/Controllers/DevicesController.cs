@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Devices;
 using SimGreenHearts.IoTDevicesAPI.Interfaces;
-using SimGreenHearts.IoTDevicesAPI.Models.DTO;
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
+using SimGreenHearts.Shared.DTO;
 
 namespace SimGreenHearts.IoTDevicesAPI.Controllers
 {
@@ -34,7 +31,7 @@ namespace SimGreenHearts.IoTDevicesAPI.Controllers
 
 
         [HttpPost("{HubName}")]
-        public async Task<IActionResult> Create(string HubName, [FromBody] CreateDeviceDto device)
+        public async Task<IActionResult> Create(string HubName, [FromBody] CreateDeviceDTO device)
         {
             try
             {
@@ -64,7 +61,7 @@ namespace SimGreenHearts.IoTDevicesAPI.Controllers
         }
 
         [HttpPut("{HubName}/ChangeKeys/{DeviceId}")]
-        public async Task<IActionResult> ChangeKeys(string HubName, string DeviceId, [FromBody] UpdateDeviceKeysDto newKeys)
+        public async Task<IActionResult> ChangeKeys(string HubName, string DeviceId, [FromBody] UpdateDeviceKeysDTO newKeys)
         {
             try
             {

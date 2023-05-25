@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
 using SimGreenHearts.IoTDevicesAPI.Interfaces;
-using SimGreenHearts.IoTDevicesAPI.Models.DTO;
+using SimGreenHearts.Shared.DTO;
 using System.Text;
 
 namespace SimGreenHearts.IoTDevicesAPI.Services
@@ -34,10 +34,11 @@ namespace SimGreenHearts.IoTDevicesAPI.Services
             return await _registryManager.GetDeviceAsync(deviceId);
         }
 
-        public async Task<Device?> CreateDevice(string hubName, CreateDeviceDto device)
+        public async Task<Device?> CreateDevice(string hubName, CreateDeviceDTO device)
         {
             var d = new Device(device.Id);
             d.Status = (DeviceStatus)device.Status;
+
             //TODO: modificar lo siguiente si vamos a aplicar conexion con certificados firmados x509
 
             if (!string.IsNullOrEmpty(device.PrimaryKey) && !string.IsNullOrEmpty(device.SecondaryKey))
@@ -58,7 +59,7 @@ namespace SimGreenHearts.IoTDevicesAPI.Services
             return await _registryManager.UpdateDeviceAsync(d);
         }
 
-        public async Task<Device?> ChangeDeviceKeys(string hubName, string deviceId, UpdateDeviceKeysDto newKeys)
+        public async Task<Device?> ChangeDeviceKeys(string hubName, string deviceId, UpdateDeviceKeysDTO newKeys)
         {
 
             var d = await _registryManager.GetDeviceAsync(deviceId);
