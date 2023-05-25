@@ -5,13 +5,12 @@
 
 <div class="mb-2">
 
-    <h3>Dispositivos</h3>
 
     <a class="btn btn-primary" href="/devices/create"><Icon Name="IconName.HouseAdd" /> Nuevo Dispositivo </a>
 
 </div>
 <Grid TItem="DeviceListDTO" class="table table-hover table-bordered table-striped"
-      DataProvider="DevicesDataProvider" AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="20">
+      DataProvider="DevicesDataProvider" AllowFiltering="true" Responsive="true" AllowPaging="true" PageSize="20">
     <GridColumn TItem="DeviceListDTO" HeaderText="Id" PropertyName="Id">
         @context.Id
     </GridColumn>
@@ -38,8 +37,13 @@
     private List<DeviceListDTO> devices;
     private ModalGeneric modal = default!;
 
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        Layout!.Title = "Dispositivos";
+        Layout!.Breadcrumbs = new List<string>() { "Inicio", "Páginas", "Dispositivos" };
         await GetDevices();
     }
 

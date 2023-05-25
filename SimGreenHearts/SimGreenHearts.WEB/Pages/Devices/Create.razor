@@ -2,10 +2,9 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 
-<div class="card" data-wow-delay="0.1s">
-    <div class="mb-2">
+<div class="card  mb-5" data-wow-delay="0.1s">
+    <div class="mt-3">
         <a class="btn btn-primary" href="/devices"><Icon Name="IconName.BoxArrowInLeft" /> Atrás </a>
-        <span class="fs-5 fw-bold text-primary text-center">Crear Dispositivo</span>
     </div>
 
     <EditForm Model="createDeviceDTO" OnValidSubmit="SaveAsync">
@@ -79,6 +78,15 @@
     List<ToastMessage> messages = new List<ToastMessage>();
     private bool statusDevice = false;
     private bool statusConnection = false;
+
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Layout!.Title = "Dispositivos";
+        Layout!.Breadcrumbs = new List<string>() { "Inicio", "Páginas", "Dispositivos", "Crear Dispositivo" };
+    }
 
     private async Task SaveAsync()
     {

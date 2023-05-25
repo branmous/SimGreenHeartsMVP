@@ -2,7 +2,7 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
-<div class="card" data-wow-delay="0.1s">
+<div class="card mb-5" data-wow-delay="0.1s">
     <p class="fs-5 fw-bold text-primary text-center">Login</p>
     <EditForm Model="authDTO" OnValidSubmit="LoginAsync">
         <DataAnnotationsValidator />
@@ -36,6 +36,15 @@
     private ModalGeneric modal = default!;
 
     private AuthDTO authDTO = new();
+
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Layout!.Title = "Login";
+        Layout!.Breadcrumbs = new List<string>() { "Inicio", "Login" };
+    }
 
     private async Task LoginAsync()
     {
