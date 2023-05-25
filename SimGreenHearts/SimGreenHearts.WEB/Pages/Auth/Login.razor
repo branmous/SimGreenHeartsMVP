@@ -2,6 +2,8 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
+@inject ToastService toastService
+
 <div class="card mb-5" data-wow-delay="0.1s">
     <p class="fs-5 fw-bold text-primary text-center">Login</p>
     <EditForm Model="authDTO" OnValidSubmit="LoginAsync">
@@ -29,11 +31,7 @@
     </EditForm>
 </div>
 
-<ModalGeneric @ref="modal" />
-
 @code {
-
-    private ModalGeneric modal = default!;
 
     private AuthDTO authDTO = new();
 
@@ -52,11 +50,12 @@
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
-            await modal.ShowError(message!, false);
+            toastService.Notify(new(ToastType.Danger, message!));
             return;
         }
 
         await loginService.LoginAsync(responseHttp.Response!.Token);
+        toastService.Notify(new(ToastType.Success, "Bienvenido!!!"));
         navigationManager.NavigateTo("/");
 
     }

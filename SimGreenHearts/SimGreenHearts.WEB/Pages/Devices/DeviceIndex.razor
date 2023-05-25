@@ -2,6 +2,7 @@
 
 @inject IRepository repository
 @inject NavigationManager navigationManager
+@inject ToastService toastService
 
 <div class="mb-2">
 
@@ -31,11 +32,10 @@
     </GridColumn>
 </Grid>
 
-<ModalGeneric @ref="modal" />
+
 
 @code {
     private List<DeviceListDTO> devices;
-    private ModalGeneric modal = default!;
 
     [CascadingParameter]
     public MainLayout? Layout { get; set; }
@@ -63,7 +63,7 @@
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
-            await modal.ShowError(message!, false);
+            toastService.Notify(new(ToastType.Danger, message!));
             return new();
         }
 

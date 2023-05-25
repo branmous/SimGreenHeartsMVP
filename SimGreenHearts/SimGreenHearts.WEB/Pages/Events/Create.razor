@@ -1,6 +1,7 @@
 ﻿@page "/events/create"
 @inject IRepository repository
 @inject NavigationManager navigationManager
+@inject ToastService toastService
 
 <div class="card  mb-5" data-wow-delay="0.1s">
     <div class="mt-3">
@@ -42,14 +43,9 @@
 </div>
 
 
-<ModalGeneric @ref="modal" />
-<Toasts class="p-3" Messages="messages" Placement="ToastsPlacement.TopRight" />
-
 @code {
     private EventDTO eventDTO = new();
     private List<EventType> eventTypes = new();
-    private ModalGeneric modal = default!;
-    List<ToastMessage> messages = new List<ToastMessage>();
 
     [CascadingParameter]
     public MainLayout? Layout { get; set; }
@@ -68,16 +64,11 @@
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
-            await modal.ShowError(message!, false);
+            toastService.Notify(new(ToastType.Danger, message!));
             return;
         }
 
-        var toash = new ToastMessage
-            {
-                Type = ToastType.Success,
-                Message = $"Se agrego el evento correctamente. Fecha: {DateTime.Now}",
-            };
-        messages.Add(toash);
+        toastService.Notify(new(ToastType.Success, $"Se agrego el evento correctamente. Fecha: {DateTime.Now}"));
         navigationManager.NavigateTo("/events");
     }
 
@@ -87,7 +78,7 @@
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
-            await modal.ShowError(message!, false);
+            toastService.Notify(new(ToastType.Danger, message!));
             return;
         }
 

@@ -1,6 +1,7 @@
 ﻿@page "/devices/create"
 @inject IRepository repository
 @inject NavigationManager navigationManager
+@inject ToastService toastService
 
 <div class="card  mb-5" data-wow-delay="0.1s">
     <div class="mt-3">
@@ -69,13 +70,8 @@
 </div>
 
 
-<ModalGeneric @ref="modal" />
-<Toasts class="p-3" Messages="messages" Placement="ToastsPlacement.TopRight" />
-
 @code {
     private CreateDeviceDTO createDeviceDTO = new();
-    private ModalGeneric modal = default!;
-    List<ToastMessage> messages = new List<ToastMessage>();
     private bool statusDevice = false;
     private bool statusConnection = false;
 
@@ -96,17 +92,12 @@
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
-            await modal.ShowError(message!, false);
+            toastService.Notify(new(ToastType.Danger, message!));
             return;
         }
 
         navigationManager.NavigateTo("/devices");
-        var toash = new ToastMessage
-            {
-                Type = ToastType.Success,
-                Message = $"Se agrego el dispositivo. Fecha: {DateTime.Now}",
-            };
-        messages.Add(toash);
+        toastService.Notify(new(ToastType.Success, $"Se agrego el dispositivo. Fecha: {DateTime.Now}"));
     }
 
 }
