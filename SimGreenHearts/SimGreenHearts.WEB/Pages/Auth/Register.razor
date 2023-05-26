@@ -2,6 +2,7 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
+@inject ToastService toastService
 
 <div class="card mb-5" data-wow-delay="0.1s">
     <p class="fs-5 fw-bold text-primary text-center">Registro de usuario</p>
@@ -70,11 +71,10 @@
     </EditForm>
 </div>
 
-<ModalGeneric @ref="modal" />
+
 
 @code {
 
-    private ModalGeneric modal = default!;
     private UserDTO userDTO = new();
     private string? imageUrl;
 
@@ -97,15 +97,15 @@
     {
         userDTO.UserType = UserType.Agronomist;
         userDTO.UserName = userDTO.Email;
-        var response = await repository.PostAsync<UserDTO, TokenDTO>("/gateway/Accounts/CreateUser", userDTO);
+        var response = await repository.PostAsync<UserDTO>("/gateway/Accounts/CreateUser", userDTO);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
-            await modal.ShowError(message!, false);
+            toastService.Notify(new(ToastType.Danger, message!));
             return;
         }
 
-        await loginService.LoginAsync(response.Response!.Token);
+        toastService.Notify(new(ToastType.Success, "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario."));
         navigationManager.NavigateTo("/");
     }
 
