@@ -7,10 +7,13 @@
 <div class="mb-2">
     <a class="btn btn-primary" href="/events/types"><Icon Name="IconName.FileRuled" /> Lista de tipo de eventos </a>
 
-    <a class="btn btn-primary" href="/events/create"><Icon Name="IconName.HouseAdd" /> Nuevo evento </a>
+    <a class="btn btn-primary" href="javascript:void(0)" @onclick=@(() => OpenModalCreateAsync())>
+        <Icon Name="IconName.CalendarPlus" /> Nuevo evento
+    </a>
+
 </div>
 
-<Grid TItem="EventListDTO" class="table table-hover table-bordered table-striped"
+<Grid @ref="grid" TItem="EventListDTO" class="table table-hover table-bordered table-striped"
       DataProvider="EventsDataProvider" AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="5">
     <GridColumn TItem="EventListDTO" HeaderText="Id" PropertyName="Id">
         @context.Id
@@ -29,15 +32,25 @@
     </GridColumn>
 </Grid>
 
+<Modal @ref="modal" Title="Modal title">
+    <BodyTemplate>
+
+    </BodyTemplate>
+</Modal>
+
 @code {
     private List<EventListDTO> events;
-    
+    private Modal modal = default!;
+    private EventDTO eventDTO = new();
+    private Grid<EventListDTO> grid = default!;
+
 
     [CascadingParameter]
     public MainLayout? Layout { get; set; }
 
     protected override void OnInitialized()
     {
+        grid = new Grid<EventListDTO>();
         Layout!.Title = "Eventos";
         Layout!.Breadcrumbs = new List<string>() { "Inicio", "Páginas", "Eventos" };
     }
@@ -48,6 +61,16 @@
             events = await GetEvents();
 
         return await Task.FromResult(request.ApplyTo(events));
+    }
+
+    private async Task OpenModalCreateAsync()
+    {
+        eventDTO = new();
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("EventDTO", eventDTO);
+        parameters.Add("OnValidSubmit", EventCallback.Factory.Create(this, CreateAsync));
+        parameters.Add("OnCancel", EventCallback.Factory.Create(this, OnHideModalClick));
+        await modal.ShowAsync<EventForm>(title: "Crear Evento", parameters);
     }
 
     private async Task<List<EventListDTO>> GetEvents()
@@ -63,4 +86,32 @@
         return response.Response!;
     }
 
+    private async Task CreateAsync()
+    {
+        var response = await repository.PostAsync<EventDTO, Event>("/gateway/events", eventDTO);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            toastService.Notify(new(ToastType.Danger, message!));
+            await OnHideModalClick();
+            return;
+        }
+
+        await OnHideModalClick();
+        toastService.Notify(new(ToastType.Success, $"Se agrego el evento correctamente. Fecha: {DateTime.Now}"));
+        await RefreshGrid();
+    }
+
+    private async Task RefreshGrid()
+    {
+        eventDTO = new();
+        events = await GetEvents();
+        await grid.RefreshDataAsync();
+        await grid.ResetPageNumber();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        await modal?.HideAsync();
+    }
 }
