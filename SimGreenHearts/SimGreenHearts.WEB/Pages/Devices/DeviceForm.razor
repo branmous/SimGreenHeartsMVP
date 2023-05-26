@@ -1,0 +1,89 @@
+﻿<EditForm Model="CreateDeviceDTO" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="card-body align-content-center">
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <InputText class="form-control" @bind-Value="@CreateDeviceDTO.Id" placeholder="Your Id" />
+                <label>Identificación</label>
+                <ValidationMessage For="@(() => CreateDeviceDTO.Id)" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <div class="form-floating">
+                    <Switch @bind-Value="statusDevice" @onchange="OnChangeStatus" Label="Estado del dispositivo" />
+                </div>
+            </div>
+            <div class="col-6 mb-3">
+                <div class="form-floating">
+                    <Switch @bind-Value="statusConnection" @onchange="OnChangeStatus" Label="Estado de conexión" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <InputText class="form-control" @bind-Value="@CreateDeviceDTO.PrimaryKey" placeholder="Your PrimaryKey" />
+                <label>Clave primaria</label>
+                <ValidationMessage For="@(() => CreateDeviceDTO.PrimaryKey)" />
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <InputText class="form-control" @bind-Value="@CreateDeviceDTO.SecondaryKey" placeholder="Your SecondaryKey" />
+                <label>Clave secundaria</label>
+                <ValidationMessage For="@(() => CreateDeviceDTO.SecondaryKey)" />
+            </div>
+        </div>
+
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <InputText type="number" class="form-control" @bind-Value="@CreateDeviceDTO.Latitude" placeholder="Your Latitude" />
+
+                <label>Latitud</label>
+                <ValidationMessage For="@(() => CreateDeviceDTO.Latitude)" />
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <InputText type="number" class="form-control" @bind-Value="@CreateDeviceDTO.Longitude" placeholder="Your Longitude" />
+                <label>Longitud</label>
+                <ValidationMessage For="@(() => CreateDeviceDTO.Longitude)" />
+            </div>
+        </div>
+
+        <div class="col-12">
+            <Button Color="ButtonColor.Light" Type="ButtonType.Button" @onclick="OnCancel"><Icon Name="IconName.Backspace" /> Cancelar</Button>
+            <Button Color="ButtonColor.Primary" Type="ButtonType.Submit"><Icon Name="IconName.DeviceHdd" />Guardar</Button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public CreateDeviceDTO CreateDeviceDTO { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnCancel { get; set; }
+
+    private bool statusDevice = false;
+    private bool statusConnection = false;
+
+    protected override void OnInitialized()
+    {
+        statusDevice = CreateDeviceDTO.Status == 0;
+        statusConnection = CreateDeviceDTO.ConnexionStatus == 0;
+    }
+
+    private void OnChangeStatus()
+    {
+        CreateDeviceDTO.Status = statusDevice ? 0 : 1;
+        CreateDeviceDTO.ConnexionStatus = statusConnection ? 0 : 1;
+    }
+}
