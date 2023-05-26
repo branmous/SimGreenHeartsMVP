@@ -5,6 +5,9 @@
 @inject ToastService toastService
 
 <div class="mb-1">
+    <Tooltip Title="Atrás" role="button">
+        <a class="btn btn-light" href="/events"><Icon Name="IconName.Backspace" /> </a>
+    </Tooltip>
     <Tooltip Title="Agregar" role="button">
         <a class="btn btn-primary" href="javascript:void(0)" @onclick=@(() => CreateAsync())><Icon Name="IconName.SendPlus" /> </a>
     </Tooltip>
@@ -21,10 +24,10 @@
     <GridColumn TItem="EventType" HeaderText="Acciones">
 
         <Tooltip Title="Editar" role="button">
-            <a href="javascript:void(0)" @onclick=@(() => EditAsync(context))><Icon Name="IconName.SendExclamation" /></a>
+            <a class="btn btn-info" href="javascript:void(0)" @onclick=@(() => EditAsync(context))><Icon Name="IconName.SendExclamation" /></a>
         </Tooltip>
         <Tooltip Title="Eliminar" role="button">
-            <a href="javascript:void(0)" @onclick=@(() => DeleteAsync(context.Id))><Icon Name="IconName.SendDash" /></a>
+            <a class="btn btn-danger" href="javascript:void(0)" @onclick=@(() => DeleteAsync(context.Id))><Icon Name="IconName.SendDash" /></a>
         </Tooltip>
 
     </GridColumn>
