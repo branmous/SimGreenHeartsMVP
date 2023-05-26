@@ -1,0 +1,161 @@
+﻿@page "/events/types"
+
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject ToastService toastService
+
+<div class="mb-1">
+    <Tooltip Title="Agregar" role="button">
+        <a class="btn btn-primary" href="javascript:void(0)" @onclick=@(() => CreateAsync())><Icon Name="IconName.SendPlus" /> </a>
+    </Tooltip>
+</div>
+
+<Grid @ref="refGrid" TItem="EventType" class="table table-hover table-bordered table-striped"
+      DataProvider="EventsDataProvider"  AllowFiltering="false" Responsive="true" AllowPaging="true" PageSize="5">
+    <GridColumn TItem="EventType" HeaderText="Id" PropertyName="Id">
+        @context.Id
+    </GridColumn>
+    <GridColumn TItem="EventType" HeaderText="Tipo de Evento" PropertyName="Description" StringComparison="StringComparison.Ordinal">
+        @context.Description
+    </GridColumn>
+    <GridColumn TItem="EventType" HeaderText="Acciones">
+
+        <Tooltip Title="Editar" role="button">
+            <a href="javascript:void(0)" @onclick=@(() => EditAsync(context))><Icon Name="IconName.SendExclamation" /></a>
+        </Tooltip>
+        <Tooltip Title="Eliminar" role="button">
+            <a href="javascript:void(0)" @onclick=@(() => DeleteAsync(context.Id))><Icon Name="IconName.SendDash" /></a>
+        </Tooltip>
+
+    </GridColumn>
+</Grid>
+
+<Modal @ref="modal" Title="Modal title">
+    <BodyTemplate>
+
+    </BodyTemplate>
+</Modal>
+
+@code {
+    private List<EventType>? eventTypes;
+    private Modal modal = default!;
+    private EventType eventType = new();
+    private Grid<EventType> refGrid = default!;
+
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        refGrid = new Grid<EventType>();
+        Layout!.Title = "Tipo de eventos";
+        Layout!.Breadcrumbs = new List<string>() { "Inicio", "Páginas", "Tipo de eventos" };
+    }
+
+    private async Task<GridDataProviderResult<EventType>> EventsDataProvider(GridDataProviderRequest<EventType> request)
+    {
+        if (eventTypes is null)
+            eventTypes = await GetEvents();
+
+        return await Task.FromResult(request.ApplyTo(eventTypes));
+    }
+
+    private async Task<List<EventType>> GetEvents()
+    {
+        var response = await repository.GetAsync<List<EventType>>("/gateway/eventTypes");
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            toastService.Notify(new(ToastType.Danger, message!));
+            return new List<EventType>();
+        }
+
+        return response.Response!;
+    }
+
+    private async Task CreateAsync()
+    {
+        eventType = new();
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("EventType", eventType);
+        parameters.Add("OnValidSubmit", EventCallback.Factory.Create(this, CreateSaveChanges));
+        parameters.Add("OnCancel", EventCallback.Factory.Create(this, OnHideModalClick));
+        await modal.ShowAsync<EventTypeForm>(title: "Crear tipo de evento", parameters);
+    }
+
+    private async Task EditAsync(EventType e)
+    {
+        eventType = e;
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("EventType", eventType);
+        parameters.Add("OnValidSubmit", EventCallback.Factory.Create(this, EditSaveChanges));
+        parameters.Add("OnCancel", EventCallback.Factory.Create(this, OnHideModalClick));
+        await modal.ShowAsync<EventTypeForm>(title: "Editar tipo de evento", parameters);
+    }
+
+    private async Task EditSaveChanges()
+    {
+        var response = await repository.PutAsync("/gateway/eventTypes", eventType);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            toastService.Notify(new(ToastType.Danger, message!));
+            await OnHideModalClick();
+            return;
+        }
+
+        await OnHideModalClick();
+        toastService.Notify(new(ToastType.Success, "El tipo de evento fue modificado correctamente!!"));
+        await RefreshGrid();
+    }
+
+    private async Task CreateSaveChanges()
+    {
+        var response = await repository.PostAsync("/gateway/eventTypes", eventType);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            toastService.Notify(new(ToastType.Danger, message!));
+            await OnHideModalClick();
+            return;
+        }
+
+        await OnHideModalClick();
+        toastService.Notify(new(ToastType.Success, "El tipo de evento fue creado correctamente!!"));
+        await RefreshGrid();
+    }
+
+    private async Task DeleteAsync(int id)
+    {
+        var response = await repository.DeleteAsync($"/gateway/eventTypes/{id}");
+        if (response.Error)
+        {
+            if (response.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/events/types");
+                return;
+            }
+
+            var message = await response.GetErrorMessageAsync();
+            toastService.Notify(new(ToastType.Danger, message!));
+            return;
+        }
+
+        toastService.Notify(new(ToastType.Success, "Tipo de evento se elimino correctamente!!"));
+        await RefreshGrid();
+    }
+
+    private async Task RefreshGrid()
+    {
+        eventType = new();
+        eventTypes = await GetEvents();
+        await refGrid.RefreshDataAsync();
+        await refGrid.ResetPageNumber();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        await modal?.HideAsync();
+    }
+
+}

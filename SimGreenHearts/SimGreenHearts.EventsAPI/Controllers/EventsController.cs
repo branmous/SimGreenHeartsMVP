@@ -13,9 +13,7 @@ namespace SimGreenHearts.EventsAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
     public class EventsController : ControllerBase
-
     {
         private readonly DataContext dataContext;
         private readonly IUserHelper userHelper;
@@ -24,12 +22,6 @@ namespace SimGreenHearts.EventsAPI.Controllers
         {
             this.dataContext = dataContext;
             this.userHelper = userHelper;
-        }
-
-        [HttpGet("[action]")]
-        public async Task<ActionResult> GetEventTypes()
-        {
-            return Ok(await dataContext.EventTypes.ToListAsync());
         }
 
         [HttpGet]

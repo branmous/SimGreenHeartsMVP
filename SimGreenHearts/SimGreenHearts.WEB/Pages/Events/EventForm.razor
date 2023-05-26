@@ -1,0 +1,72 @@
+﻿@inject IRepository repository
+@inject ToastService toastService
+
+<EditForm Model="EventDTO" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="card-body align-content-center">
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <select class="form-select" @bind="EventDTO.EventId">
+                    <option value="0">-- Seleccione un evento --</option>
+                    @if (eventTypes is not null)
+                    {
+                        @foreach (var type in eventTypes)
+                        {
+                            <option value="@type.Id">@type.Description</option>
+                        }
+                    }
+                </select>
+                <label>Eventos</label>
+                <ValidationMessage For="@(() => EventDTO.EventId)" />
+            </div>
+
+        </div>
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <InputTextArea class="form-control" @bind-Value="@EventDTO.Observation" placeholder="Your Email" />
+                <label>Observaciones</label>
+                <ValidationMessage For="@(() => EventDTO.Observation)" />
+            </div>
+        </div>
+        <div class="col-12">
+            <Button Color="ButtonColor.Light" Type="ButtonType.Button" @onclick="OnCancel"><Icon Name="IconName.Backspace" /> Cancelar</Button>
+            <Button Color="ButtonColor.Primary" Type="ButtonType.Submit"><Icon Name="IconName.CalendarCheck" />Guardar</Button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    private List<EventType> eventTypes = new();
+
+    [Parameter]
+    [EditorRequired]
+    public EventDTO EventDTO { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnCancel { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEventTypesAsync();
+    }
+
+    private async Task GetEventTypesAsync()
+    {
+        var response = await repository.GetAsync<List<EventType>>("/gateway/eventTypes");
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            toastService.Notify(new(ToastType.Danger, message!));
+            await this.OnCancel.InvokeAsync();
+            return;
+        }
+
+        eventTypes = response.Response!;
+    }
+}

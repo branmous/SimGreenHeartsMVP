@@ -2,14 +2,15 @@
 
 @inject IRepository repository
 @inject NavigationManager navigationManager
+@inject ToastService toastService
 
 <div class="mb-2">
 
 
-    <a class="btn btn-primary" href="/devices/create"><Icon Name="IconName.HouseAdd" /> Nuevo Dispositivo </a>
+    <a class="btn btn-primary" href="javascript:void(0)" @onclick=@(() => OpenModalCreateAsync())><Icon Name="IconName.HouseAdd" /> Nuevo Dispositivo </a>
 
 </div>
-<Grid TItem="DeviceListDTO" class="table table-hover table-bordered table-striped"
+<Grid @ref="grid" TItem="DeviceListDTO" class="table table-hover table-bordered table-striped"
       DataProvider="DevicesDataProvider" AllowFiltering="true" Responsive="true" AllowPaging="true" PageSize="20">
     <GridColumn TItem="DeviceListDTO" HeaderText="Id" PropertyName="Id">
         @context.Id
@@ -31,17 +32,25 @@
     </GridColumn>
 </Grid>
 
-<ModalGeneric @ref="modal" />
+<Modal @ref="modal" Title="Modal title">
+    <BodyTemplate>
+
+    </BodyTemplate>
+</Modal>
+
 
 @code {
     private List<DeviceListDTO> devices;
-    private ModalGeneric modal = default!;
+    private Modal modal = default!;
+    private CreateDeviceDTO device = new();
+    private Grid<DeviceListDTO> grid = default!;
 
     [CascadingParameter]
     public MainLayout? Layout { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        grid = new Grid<DeviceListDTO>();
         Layout!.Title = "Dispositivos";
         Layout!.Breadcrumbs = new List<string>() { "Inicio", "Páginas", "Dispositivos" };
         await GetDevices();
@@ -63,10 +72,50 @@
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
-            await modal.ShowError(message!, false);
+            toastService.Notify(new(ToastType.Danger, message!));
             return new();
         }
 
         return response.Response!;
     }
+
+    private async Task OpenModalCreateAsync()
+    {
+        device = new();
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("CreateDeviceDTO", device);
+        parameters.Add("OnValidSubmit", EventCallback.Factory.Create(this, CreateAsync));
+        parameters.Add("OnCancel", EventCallback.Factory.Create(this, OnHideModalClick));
+        await modal.ShowAsync<DeviceForm>(title: "Crear Dispositivo", parameters);
+    }
+
+    private async Task CreateAsync()
+    {
+        var response = await repository.PostAsync<CreateDeviceDTO, DeviceListDTO>("/gateway/Devices/iothub-xm-dev", device);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            toastService.Notify(new(ToastType.Danger, message!));
+            await OnHideModalClick();
+            return;
+        }
+
+        await OnHideModalClick();
+        toastService.Notify(new(ToastType.Success, $"Se agrego el dispositivo. Fecha: {DateTime.Now}"));
+        await RefreshGrid();
+    }
+
+    private async Task RefreshGrid()
+    {
+        device = new();
+        devices = await GetDevices();
+        await grid.RefreshDataAsync();
+        await grid.ResetPageNumber();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        await modal?.HideAsync();
+    }
+
 }
