@@ -40,6 +40,18 @@
       ]
     },
     {
+      "UpstreamPathTemplate": "/gateway/accounts/ConfirmEmail",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/accounts/ConfirmEmail",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7004
+        }
+      ]
+    },
+    {
       "UpstreamPathTemplate": "/gateway/accounts/CreateUser",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamPathTemplate": "/api/Accounts/CreateUser",
