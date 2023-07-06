@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimGreenHearts.IoTDevicesAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimGreenHearts.APIGateway", "SimGreenHearts.APIGateway\SimGreenHearts.APIGateway.csproj", "{ADA29273-C7DF-4CC6-826B-8D0967402D4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimGreenHearts.Mobile", "SimGreenHearts.Mobile\SimGreenHearts.Mobile.csproj", "{87282900-4D11-493D-A741-3DC328270745}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,12 @@ Global
 		{ADA29273-C7DF-4CC6-826B-8D0967402D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADA29273-C7DF-4CC6-826B-8D0967402D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADA29273-C7DF-4CC6-826B-8D0967402D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87282900-4D11-493D-A741-3DC328270745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87282900-4D11-493D-A741-3DC328270745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87282900-4D11-493D-A741-3DC328270745}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{87282900-4D11-493D-A741-3DC328270745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87282900-4D11-493D-A741-3DC328270745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87282900-4D11-493D-A741-3DC328270745}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
