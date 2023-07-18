@@ -1,4 +1,6 @@
-﻿namespace SimGreenHearts.Mobile
+﻿using SimGreenHearts.Mobile.Views.Auth;
+
+namespace SimGreenHearts.Mobile
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new NavigationPage(new LoginView());
         }
     }
 }
